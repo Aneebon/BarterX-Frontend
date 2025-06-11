@@ -1,0 +1,26 @@
+:root {
+    /* Color palette */
+    --color-primary: #2E7D32;
+    --color-accent: #4CAF50;
+    --color-background: #F5F5F5;
+    --color-surface: #FFFFFF;
+    --color-text: #333333;
+    --color-subtle: #757575;
+    --color-background-dark: #121212;
+    --color-surface-dark: #1E1E1E;
+    --color-text-dark: #E0E0E0;
+    --color-subtle-dark: #B0B0B0;
+    /* Tier badges */
+    --color-bronze: #CD7F32;
+    --color-silver: #C0C0C0;
+    --color-gold: #FFD700;
+    /* Animation */
+    --transition-default: 0.2s ease;
+    --transition-slow: 0.4s ease;
+    /* Spacing */
+    --space-xs: 0.25rem;
+    --space-sm: 0.5rem;
+    --space-md: 1rem;
+    --space-lg: 1.5rem;
+    --space-xl: 2rem;
+}
