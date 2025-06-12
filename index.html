@@ -711,7 +711,7 @@
 
   <script>
     // Base URL for your backend API
-    const API_BASE_URL = 'https://barterx-ov5f.onrender.com/api';
+    const API_BASE_URL = 'http://localhost:3000/api';
 
     // Global variables for onboarding data
     let userData = {};
@@ -836,7 +836,14 @@
             localStorage.setItem('currentUser', JSON.stringify(data.user));
             document.getElementById('dashboard-name').textContent = data.user.name || 'N/A';
             document.getElementById('dashboard-email').textContent = data.user.email || 'N/A';
-            document.getElementById('dashboard-interests').textContent = data.user.interests?.join(', ') || 'None';
+            // Properly display interests as question/answer pairs
+            if (Array.isArray(data.user.interests) && data.user.interests.length > 0) {
+              document.getElementById('dashboard-interests').innerHTML = data.user.interests.map(
+                i => `<div><strong>${i.question}</strong>: ${Array.isArray(i.answer) ? i.answer.join(', ') : i.answer}</div>`
+              ).join('');
+            } else {
+              document.getElementById('dashboard-interests').textContent = 'None';
+            }
             document.getElementById('dashboard-modes').textContent = data.user.modes?.join(', ') || 'None';
           }
           showSection('dashboard');
@@ -852,18 +859,38 @@
     document.getElementById('onboardingForm')?.addEventListener('submit', async function(e) {
       e.preventDefault();
       const form = e.target;
-      const interests = [
-        form.q1.value,
-        form.q2.value,
-        form.q3.value,
-        form.q4.value,
-        form.q5.value,
-        form.q6.value,
-        form.q7.value,
-        form.q8.value,
-        ...Array.from(form.querySelectorAll('input[name="q9"]:checked')).map(cb => cb.value),
-        form.q10.value
-      ].filter(Boolean);
+      const questions = [
+  "What is your primary interest in BarterX?",
+  "What type of goods/services are you most interested in bartering?",
+  "How often do you plan to use BarterX?",
+  "What is your age group?",
+  "Which city do you live in?",
+  "What is your preferred mode of exchange?",
+  "Are you interested in group/community barters?",
+  "How did you hear about BarterX?",
+  "What motivates you to barter? (Select all that apply)",
+  "Any suggestions for us?"
+];
+
+const answers = [
+  form.q1.value,
+  form.q2.value,
+  form.q3.value,
+  form.q4.value,
+  form.q5.value,
+  form.q6.value,
+  form.q7.value,
+  form.q8.value,
+  Array.from(form.querySelectorAll('input[name="q9"]:checked')).map(cb => cb.value),
+  form.q10.value
+];
+
+const interests = questions.map((question, i) => ({
+  question,
+  answer: answers[i]
+}));
+
+      console.log('Received interests:', interests);
 
       const currentUser = JSON.parse(localStorage.getItem('currentUser'));
       if (!currentUser || !currentUser._id) {
